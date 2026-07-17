@@ -2,6 +2,19 @@
 
 This script is deliberately centered on one live workflow, not a feature tour. Record with the frozen `lied-test-run` fixture so the evidence remains reproducible.
 
+## Pace it as a transformation
+
+| Time | Show | Point to make |
+| --- | --- | --- |
+| 0:00–0:15 | “Checkout tests pass” | “The agent looks finished. I’m about to trust it.” |
+| 0:15–0:40 | Receipts receipt reveals | “Do not merge: the test command ran, but test integrity was weakened.” |
+| 0:40–1:20 | `test.skip` and removed assertion | “This is executable proof, not a model opinion.” |
+| 1:20–2:00 | Trust boundary | “Codex extracts claims; all verification afterward runs locally.” |
+| 2:00–2:40 | Blast-radius fixture | “Escalation is a deliberately narrow heuristic for sensitive paths and scope surprises, not a security proof.” |
+| 2:40–3:00 | Closing screen | “Every autonomous coding agent will eventually need an independent verifier.” |
+
+**Judge objection answers:** CI tells you whether tests passed. Receipts tells you whether the agent’s summary truthfully represents what it did. The system making a claim should not be the only system that verifies it.
+
 ## 0:00–0:25 — problem and insight
 
 > “Coding agents now finish pull requests with confident summaries: ‘tests pass, no breaking changes.’ The reviewer either trusts that summary or manually repeats the agent’s work. Receipts is for that reviewer. Don’t trust the summary. Trust the receipt.”
