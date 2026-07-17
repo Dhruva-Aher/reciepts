@@ -34,7 +34,7 @@ Point to the agent claim, `test.skip`, and removed assertion. Do not rush this b
 
 ## 0:50–1:25 — why it is different
 
-> “This is not code review. CI tells you whether a configured workflow passed. Receipts checks whether an agent’s completion claim is supported by a re-run and repository evidence. Don’t trust the summary. Trust the receipt.”
+> “Coding agents explain. Receipts checks the evidence. This is not code review. CI tells you whether a configured workflow passed. Receipts checks whether an agent’s completion claim is supported by a re-run and repository evidence. Don’t trust the summary. Trust the receipt.”
 
 ## 1:25–1:55 — how it works and live proof
 
