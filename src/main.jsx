@@ -42,7 +42,7 @@ function downloadReceipt(report) {
   const blob = new Blob([`${lines.join('\n')}\n`], { type: 'text/markdown' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
-  link.href = url; link.download = `receipts-${report.verdict.verdict.toLowerCase()}.md`; link.click();
+  link.href = url; link.download = `receipts-${report.verdict.verdict.toLowerCase()}.md`; document.body.appendChild(link); link.click(); link.remove();
   URL.revokeObjectURL(url);
 }
 const cardMotion = (index) => ({ initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { delay: 0.48 + index * 0.09, duration: 0.25, ease: 'easeOut' } });
