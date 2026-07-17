@@ -23,7 +23,10 @@ createServer(async (req, res) => {
   try {
     const { transcript, repoPath, taskDescription, base, fixture } = JSON.parse(raw);
     const report = fixture ? await verifyFixture(fixture) : await verifyRun({ transcript, cwd: repoPath || process.cwd(), taskDescription, base });
-    send(res, 200, { ...report, history: await remember(report) });
+    let history = null;
+    try { history = await remember(report); }
+    catch (historyError) { console.warn(`Receipts history could not be saved: ${historyError.message}`); }
+    send(res, 200, { ...report, history });
   }
   catch (error) { send(res, 400, { error: error.message }); }
 }).listen(8787, () => console.log('Receipts evidence API listening on http://localhost:8787'));
