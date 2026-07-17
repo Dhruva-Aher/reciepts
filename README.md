@@ -110,6 +110,8 @@ npm run test:pipeline
 npm run build
 ```
 
+`npm run verify` combines those checks with all three frozen fixture replays. The repository’s [GitHub Actions workflow](.github/workflows/verify.yml) runs that same command on every push and pull request.
+
 The fixture test replays all three reports twice and asserts byte-stable evidence output, so demo behavior does not depend on the repository’s current `HEAD` or working tree.
 
 ## Claim-extraction providers
