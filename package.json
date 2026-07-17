@@ -10,7 +10,7 @@
     "evidence": "node server/evidence-cli.mjs",
     "evidence:server": "node server/server.mjs",
     "test:pipeline": "node --test server/**/*.test.mjs",
-    "verify": "npm run test:pipeline && npm run build && npm run evidence -- --fixture=clean-run && npm run evidence -- --fixture=lied-test-run && npm run evidence -- --fixture=blast-radius-run"
+    "verify": "npm run test:pipeline && npm run build"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

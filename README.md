@@ -57,7 +57,7 @@ Prerequisites: Node.js and an authenticated Codex CLI session. The default provi
 | Windows | Not currently supported | The fixture capture/test path expects POSIX tooling. |
 
 ```bash
-npm install
+npm ci
 npm run evidence:server
 ```
 
@@ -100,7 +100,7 @@ npm run test:pipeline
 npm run build
 ```
 
-`npm run verify` combines those checks with all three frozen fixture replays. The repository’s [GitHub Actions workflow](.github/workflows/verify.yml) runs that same command on every push and pull request.
+`npm run verify` combines the pipeline suite and production build. The pipeline suite replays all three frozen fixture reports twice; the repository’s [GitHub Actions workflow](.github/workflows/verify.yml) runs that same command on every push and pull request.
 
 ### Export a receipt
 
@@ -161,6 +161,10 @@ assets/                      captured fixture-driven MERGE, FIX, and ESCALATE ex
 Receipts currently verifies commands that it can safely allow-list and reports deterministic evidence from the repository snapshot it was given. It does not claim to replace human code review: its job is to make an agent’s completion summary auditable before that review starts.
 
 The next product validation step is a pilot with developers who review AI-authored pull requests, measuring whether the receipt changes their merge decision or removes a manual verification step. No pilot or productivity percentage is claimed in this repository today.
+
+## Future work
+
+After submission, validate agent-agnostic transcript capture with additional installed agent CLIs and test a native pull-request handoff. These are deliberately not part of this submission; see the [feature freeze](docs/feature-freeze.md).
 
 ## Failure behavior and verdict priority
 
