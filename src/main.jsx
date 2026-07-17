@@ -17,6 +17,11 @@ const samples = [
 const verdictColor = { MERGE: 'border-emerald-600 bg-emerald-50 text-emerald-950', FIX: 'border-amber-500 bg-amber-50 text-amber-950', 'RE-RUN': 'border-amber-500 bg-amber-50 text-amber-950', ESCALATE: 'border-red-600 bg-red-50 text-red-950' };
 const verdictMotionColor = { MERGE: '#ecfdf5', FIX: '#fffbeb', 'RE-RUN': '#fffbeb', ESCALATE: '#fef2f2' };
 const cardMotion = (index) => ({ initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { delay: 0.48 + index * 0.09, duration: 0.25, ease: 'easeOut' } });
+function readableError(error) {
+  const message = error?.message || 'Verification could not complete.';
+  if (/failed to fetch/i.test(message)) return 'Couldn’t reach the evidence server. Start the pipeline server and try again.';
+  return message.replace(/\s+at\s+.*$/s, '');
+}
 
 function EvidenceCard({ item, index }) {
   const caught = item.status === 'contradicted';
@@ -74,7 +79,7 @@ function App() {
       if (!response.ok) throw new Error(body.error || `Pipeline request failed with HTTP ${response.status}.`);
       if (!body.verdict) throw new Error('The pipeline returned no verdict.');
       setReport(body); setState('verdict');
-    } catch (requestError) { setError(requestError.message); setState('error'); }
+    } catch (requestError) { setError(readableError(requestError)); setState('error'); }
   }
   const startOver = () => { setState('input'); setReport(null); setError(''); };
 

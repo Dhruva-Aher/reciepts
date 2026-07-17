@@ -44,8 +44,18 @@ export class CodexProvider extends ClaimExtractor {
         const timer = setTimeout(() => { timedOut = true; child.kill('SIGTERM'); }, this.timeoutMs);
         child.stdout.on('data', (chunk) => { stdout += chunk; });
         child.stderr.on('data', (chunk) => { stderr += chunk; });
-        child.on('error', (error) => { clearTimeout(timer); reject(error); });
-        child.on('close', (exitCode) => { clearTimeout(timer); if (timedOut) reject(new Error('Codex claim extraction timed out.')); else if (exitCode !== 0) reject(new Error(`Codex claim extraction failed: ${stderr.trim() || `exit code ${exitCode}`}`)); else resolve(stdout); });
+        child.on('error', (error) => {
+          clearTimeout(timer);
+          if (error.code === 'ENOENT') reject(new Error(`Codex CLI unavailable: could not start ${this.bin}. Install Codex and authenticate with \`codex login\`.`));
+          else reject(new Error(`Codex claim extraction could not start: ${error.message}`));
+        });
+        child.on('close', (exitCode) => {
+          clearTimeout(timer);
+          if (timedOut) reject(new Error(`Codex claim extraction timed out after ${this.timeoutMs}ms.`));
+          else if (exitCode !== 0 && /(?:not logged in|unauthenticated|authentication|login)/i.test(stderr)) reject(new Error('Codex CLI authentication failed. Run `codex login` and try again.'));
+          else if (exitCode !== 0) reject(new Error(`Codex claim extraction failed: ${stderr.trim() || `exit code ${exitCode}`}`));
+          else resolve(stdout);
+        });
         child.stdin.end(prompt);
       });
       return parseCodexClaims(result, commands);

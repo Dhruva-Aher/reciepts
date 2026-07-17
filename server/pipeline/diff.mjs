@@ -5,7 +5,11 @@ const testPath = /(?:^|\/)(?:test|tests|__tests__|spec)(?:\/|\.|$)|\.(?:test|spe
 const sensitivePath = /(?:^|\/)(auth|billing|migrations?|secrets?|infra|\.github\/workflows)(?:\/|$)|(?:docker|terraform|kubernetes|deploy)/i;
 
 export async function gitDiff(cwd, base = 'HEAD') {
+  const isRepository = await exec('git', ['rev-parse', '--is-inside-work-tree'], { cwd }).then(({ stdout }) => stdout.trim() === 'true').catch(() => false);
+  if (!isRepository) throw new Error(`Git diff unavailable: ${cwd} is not a Git repository.`);
+  const hasHead = await exec('git', ['rev-parse', '--verify', 'HEAD'], { cwd }).then(() => true).catch(() => false);
   const hasBase = await exec('git', ['rev-parse', '--verify', base], { cwd }).then(() => true).catch(() => false);
+  if (hasHead && !hasBase) throw new Error(`Git base ${base} does not exist.`);
   if (!hasBase) {
     const { stdout } = await exec('git', ['ls-files', '--others', '--exclude-standard'], { cwd });
     const paths = stdout.split('\n').filter(Boolean);

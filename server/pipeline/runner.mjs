@@ -16,7 +16,7 @@ export async function rerunCommand(command, { cwd, timeoutMs = 30_000 } = {}) {
     child.stdout.on('data', (chunk) => { stdout += chunk; });
     child.stderr.on('data', (chunk) => { stderr += chunk; });
     child.on('close', (exitCode, signal) => { clearTimeout(timer); resolve({ command, exitCode: exitCode ?? 1, signal, timedOut, stdout, stderr, ranAt: new Date().toISOString() }); });
-    child.on('error', (error) => { clearTimeout(timer); resolve({ command, exitCode: 1, timedOut: false, stdout, stderr: `${stderr}${error.message}`, ranAt: new Date().toISOString() }); });
+    child.on('error', (error) => { clearTimeout(timer); resolve({ command, exitCode: 1, timedOut: false, stdout, stderr: `${stderr}Command could not start: ${command.split(/\s+/)[0]} (${error.code || error.message})`, ranAt: new Date().toISOString() }); });
   });
 }
 

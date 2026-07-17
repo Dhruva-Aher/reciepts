@@ -144,3 +144,16 @@ assets/lied-test-run-fix.png captured FIX contradiction screenshot
 Receipts currently verifies commands that it can safely allow-list and reports deterministic evidence from the repository snapshot it was given. It does not claim to replace human code review: its job is to make an agent’s completion summary auditable before that review starts.
 
 The next product validation step is a pilot with developers who review AI-authored pull requests, measuring whether the receipt changes their merge decision or removes a manual verification step. No pilot or productivity percentage is claimed in this repository today.
+
+## Failure behavior and verdict priority
+
+Receipts fails specifically rather than silently: empty or oversized transcripts are rejected before a provider is called; an unavailable, unauthenticated, timed-out, or malformed Codex extraction reports the exact extraction failure; a non-Git path or invalid Git base reports a Git-specific error; and an unrunnable referenced command becomes contradictory command evidence instead of a process crash.
+
+Verdict priority is deterministic and intentionally conservative:
+
+1. `FIX` when a command claim is contradicted or weakened tests are found.
+2. `ESCALATE` when claims are otherwise supported but the diff has a sensitive-path or scope surprise.
+3. `RE-RUN` when no executable claims are available.
+4. `MERGE` only when executable claims are supported and no other evidence flags the run.
+
+This means a true test command plus an auth-path surprise is still an `ESCALATE`; a deleted assertion outranks that surprise as a `FIX`.

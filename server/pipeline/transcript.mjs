@@ -1,5 +1,11 @@
 const COMMAND_LINE = /(?:^|\n)\s*(?:Ran|Command|Executed)\s*:\s*`?([^`\n]+)`?/gim;
 const INLINE_COMMAND = /`((?:pnpm|npm|yarn|bun|node|pytest|python|go|cargo|make)\b[^`]*)`/g;
+export const MAX_TRANSCRIPT_CHARS = 120_000;
+
+export function validateTranscript(transcript) {
+  if (typeof transcript !== 'string' || !transcript.trim()) throw new Error('Transcript is empty. Paste the agent’s final message and referenced commands.');
+  if (transcript.length > MAX_TRANSCRIPT_CHARS) throw new Error(`Transcript is too large (${transcript.length} characters). Maximum supported size is ${MAX_TRANSCRIPT_CHARS} characters.`);
+}
 
 export function commandsFromTranscript(transcript) {
   const commands = new Set();
@@ -39,6 +45,7 @@ export function extractClaimsLocally(transcript) {
 }
 
 export async function extractClaims({ transcript, provider }) {
+  validateTranscript(transcript);
   const local = extractClaimsLocally(transcript);
   const claims = await provider.extract({ transcript, commands: local.commands });
   return { commands: local.commands, claims, extraction: provider.id };
