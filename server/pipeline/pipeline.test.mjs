@@ -45,11 +45,12 @@ test('captures missing working directories and long commands without hanging', a
   const missingCwd = await rerunCommand('node --version', { cwd: '/private/tmp/receipts-missing-cwd' });
   assert.equal(missingCwd.exitCode, 1);
   assert.match(missingCwd.stderr, /Command could not start: node/);
+  assert.equal(evaluateCommandClaim({ id: 'missing', text: 'Build passed', expected: { exitCode: 0 } }, missingCwd).status, 'inconclusive');
   const repo = await mkdtemp(join(tmpdir(), 'receipts-timeout-'));
-  await writeFile(join(repo, 'hang.test.mjs'), 'setInterval(() => {}, 1000);\n');
-  const timedOut = await rerunCommand('node --test hang.test.mjs', { cwd: repo, timeoutMs: 50 });
+  await writeFile(join(repo, 'hang.mjs'), 'setInterval(() => {}, 1000);\n');
+  const timedOut = await rerunCommand('node hang.mjs', { cwd: repo, timeoutMs: 50 });
   assert.equal(timedOut.timedOut, true);
-  assert.equal(evaluateCommandClaim({ id: 'slow', text: 'Tests passed', expected: { exitCode: 0 } }, timedOut).status, 'contradicted');
+  assert.equal(evaluateCommandClaim({ id: 'slow', text: 'Tests passed', expected: { exitCode: 0 } }, timedOut).status, 'inconclusive');
 });
 
 test('accepts structured claim extraction from Codex stdout', () => {
@@ -135,6 +136,7 @@ test('handles no repository, empty history, unchanged, binary, renamed, and larg
 
 test('documents conservative verdict priority for missing and conflicting evidence', () => {
   assert.equal(makeVerdict({ claimEvidence: [], weakenedTests: [], blastRadius: { status: 'expected' } }).verdict, 'RE-RUN');
+  assert.equal(makeVerdict({ claimEvidence: [{ status: 'inconclusive' }], weakenedTests: [], blastRadius: { status: 'expected' } }).verdict, 'RE-RUN');
   assert.equal(makeVerdict({ claimEvidence: [{ status: 'supported' }], weakenedTests: [], blastRadius: { status: 'surprise', sensitivePaths: [{ path: 'auth/session.mjs' }] } }).verdict, 'ESCALATE');
   assert.equal(makeVerdict({ claimEvidence: [{ status: 'contradicted', claim: 'Tests pass' }], weakenedTests: [], blastRadius: { status: 'surprise', sensitivePaths: [{ path: 'auth/session.mjs' }] } }).verdict, 'FIX');
 });

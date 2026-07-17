@@ -153,7 +153,7 @@ Verdict priority is deterministic and intentionally conservative:
 
 1. `FIX` when a command claim is contradicted or weakened tests are found.
 2. `ESCALATE` when claims are otherwise supported but the diff has a sensitive-path or scope surprise.
-3. `RE-RUN` when no executable claims are available.
+3. `RE-RUN` when no executable claims are available, or a referenced command could not start or timed out.
 4. `MERGE` only when executable claims are supported and no other evidence flags the run.
 
-This means a true test command plus an auth-path surprise is still an `ESCALATE`; a deleted assertion outranks that surprise as a `FIX`.
+This means a true test command plus an auth-path surprise is still an `ESCALATE`; a deleted assertion outranks that surprise as a `FIX`; and an unavailable environment becomes `RE-RUN` rather than an unsupported accusation.
