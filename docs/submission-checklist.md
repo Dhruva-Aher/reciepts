@@ -7,7 +7,7 @@
 - [x] Codex is used in product runtime through `CodexProvider`.
 - [x] The exact observed runtime identifier is `gpt-5.6-terra via authenticated Codex CLI`.
 - [x] README includes setup, frozen sample data, and a testing path.
-- [x] README opens with a 20-second real live-Codex-to-FIX GIF and links the captured source transcript.
+- [x] README opens with a 20-second real Codex-to-FIX capture and links the captured source transcript; its copy accurately states that the source agent reported the skip.
 - [x] README documents supported platforms and a no-rebuild frozen-fixture path for judges.
 - [ ] Run `/feedback` in the primary Codex build session and record the returned session ID in the Devpost submission. Do not substitute a diagnostic-session ID.
 
@@ -20,7 +20,7 @@
 
 ## Judge-facing final pass
 
-- [ ] Open the submitted video with the live-Codex `FIX` reveal in the first 20 seconds.
+- [ ] Open the submitted video with the recorded real Codex-to-FIX capture in the first 20 seconds, then replay the frozen FIX fixture for judges.
 - [ ] Verify the fixture dropdown works from a clean install.
 - [ ] Run `npm run test:pipeline` and `npm run build` immediately before submitting.
 - [ ] Confirm all impact statements remain limited to demonstrated behavior; no unmeasured productivity claims.

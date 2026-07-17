@@ -1,29 +1,33 @@
 # Three-minute narrated demo
 
-This script is deliberately centered on one live workflow, not a feature tour. Record with the frozen `lied-test-run` fixture so the evidence remains reproducible.
+This script is deliberately centered on one verification workflow, not a feature tour. Open with the recorded live capture, then use the frozen `lied-test-run` fixture for a reproducible judge-facing replay. The live source transcript accurately records that the test was skipped; do not describe it as a concealed lie.
 
 ## Pace it as a transformation
 
 | Time | Show | Point to make |
 | --- | --- | --- |
-| 0:00–0:15 | “Checkout tests pass” | “The agent looks finished. I’m about to trust it.” |
-| 0:15–0:40 | Receipts receipt reveals | “Do not merge: the test command ran, but test integrity was weakened.” |
+| 0:00–0:15 | Recorded live Codex-to-FIX capture | “This is a real agent transcript and a real local re-run.” |
+| 0:15–0:40 | Reproducible FIX fixture receipt | “The command ran, but test integrity was weakened.” |
 | 0:40–1:20 | `test.skip` and removed assertion | “This is executable proof, not a model opinion.” |
 | 1:20–2:00 | Trust boundary | “Codex extracts claims; all verification afterward runs locally.” |
 | 2:00–2:40 | Blast-radius fixture | “Escalation is a deliberately narrow heuristic for sensitive paths and scope surprises, not a security proof.” |
 | 2:40–3:00 | Closing screen | “Every autonomous coding agent will eventually need an independent verifier.” |
 
-**Judge objection answers:** CI tells you whether tests passed. Receipts tells you whether the agent’s summary truthfully represents what it did. The system making a claim should not be the only system that verifies it.
+**Judge objection answers:** CI tells you whether a configured workflow passed. Receipts checks whether an agent completion claim is supported by a re-run and repository evidence. It is not a code reviewer, a security scanner, or a CI merge gate. The system making a claim should not be the only system that verifies it.
 
-## 0:00–0:25 — problem and insight
+## 0:00–0:25 — problem and live proof
 
-> “Coding agents now finish pull requests with confident summaries: ‘tests pass, no breaking changes.’ The reviewer either trusts that summary or manually repeats the agent’s work. Receipts is for that reviewer. Don’t trust the summary. Trust the receipt.”
+> “Coding agents finish with summaries. A reviewer either trusts that summary or manually repeats the work. Receipts is for the moment between those two choices.”
 
-Show the input screen, select **Fixture · lied test run**, and keep the transcript visible.
+Play the first seconds of the recorded live capture. Keep the source transcript and its reported skipped test visible.
+
+> “This is a real Codex transcript. The agent accurately reports an exit-zero test command and one skipped test. Receipts re-runs that command and inspects the real Git diff; it finds the skipped test plus a removed assertion and produces FIX. This is a live pipeline run—not a staged success state.”
 
 ## 0:25–1:10 — the wow moment
 
-> “This agent says checkout tests pass. I’ll check the run.”
+Switch to the app, select **Fixture · lied test run**, and say:
+
+> “Now I’ll replay the same supported evidence type from the frozen judge fixture: this agent says checkout tests pass.”
 
 Click **Check this run**. Let the verdict reveal play. Pause on `FIX`.
 
@@ -43,11 +47,11 @@ Show the README architecture diagram or briefly switch to the repository.
 
 Show the fixture selector and quickly select `clean run`, then `blast radius run` if timing permits.
 
-> “There are three frozen cases: a clean MERGE, this FIX, and an ESCALATE for an auth-path surprise. Every fixture contains a real Codex-generated transcript, a captured Git diff, command evidence, and an expected verdict. The regression suite replays each twice with byte-stable output.”
+> “There are three frozen cases: a clean MERGE, this FIX, and an ESCALATE for an auth-path surprise. Each has captured transcript input, command evidence, a Git diff, and an expected verdict. The regression suite replays each twice with byte-stable output. Fixtures make evaluation reproducible; the live capture demonstrates the runtime path.”
 
 ## 2:30–3:00 — Codex collaboration and close
 
-> “Codex accelerated the whole lifecycle: planning the verdict schema, implementing the evidence layers, debugging empty-history and diff-detection edge cases, creating frozen regression fixtures, refactoring claim extraction into Codex and Local providers, and documenting the final product. The human made the trust boundary and product decisions; Codex made the workflow faster to build and test.”
+> “Codex helped implement the evidence pipeline, refactor direct claim extraction into the `CodexProvider` and `LocalProvider`, harden failure paths, freeze the regression fixtures, and build the evidence-first UI. The human made the scope and trust-boundary decisions. At runtime, GPT-5.6 understands what the agent promised; local evidence determines whether the repository supports it.”
 
 > “Receipts gives reviewers one answer in seconds: can I trust this agent’s PR enough to merge—or do I have a receipt that says otherwise?”
 
