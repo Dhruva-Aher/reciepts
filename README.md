@@ -1,8 +1,17 @@
 # Receipts
 
-**An independent verification layer for coding agents.** Receipts turns a subset of agent completion claims into executable evidence before a human merges.
+**Verify what coding agents claim—not the code itself.** Receipts turns a subset of agent completion claims into executable evidence before a human merges.
 
 > **Don’t trust the summary. Trust the receipt.**
+
+```text
+AGENT SUMMARY                         RECEIPTS
+✓ “Checkout tests pass: npm test”     FIX BEFORE MERGE
+                                      test.skip found
+                                      assertion removed
+```
+
+The receipt above is the reproducible `lied-test-run` case: the claimed command exits successfully, while the captured repository evidence shows that the test was weakened. This is the product’s question in one screen: **does the repository support what the agent said?**
 
 ![20-second live reveal: a real Codex transcript is submitted, Receipts checks it, and a live FIX receipt reveals a skipped test and removed assertion.](assets/live-codex-fix-reveal.gif)
 

@@ -1,41 +1,42 @@
 # Three-minute narrated demo
 
-This script is deliberately centered on one verification workflow, not a feature tour. Open with the recorded live capture, then use the frozen `lied-test-run` fixture for a reproducible judge-facing replay. The live source transcript accurately records that the test was skipped; do not describe it as a concealed lie.
+This script is deliberately centered on one verification workflow, not a feature tour. Open with the frozen `lied-test-run` reveal so the contradiction lands immediately; use the recorded live capture later as runtime proof. The fixture is a reproducible weakened-test case, not a claim that Receipts blocks a merge.
 
 ## Pace it as a transformation
 
 | Time | Show | Point to make |
 | --- | --- | --- |
-| 0:00–0:15 | Recorded live Codex-to-FIX capture | “This is a real agent transcript and a real local re-run.” |
-| 0:15–0:40 | Reproducible FIX fixture receipt | “The command ran, but test integrity was weakened.” |
-| 0:40–1:20 | `test.skip` and removed assertion | “This is executable proof, not a model opinion.” |
-| 1:20–2:00 | Trust boundary | “Codex extracts claims; all verification afterward runs locally.” |
-| 2:00–2:40 | Blast-radius fixture | “Escalation is a deliberately narrow heuristic for sensitive paths and scope surprises, not a security proof.” |
-| 2:40–3:00 | Closing screen | “Every autonomous coding agent will eventually need an independent verifier.” |
+| 0:00–0:20 | Reproducible FIX fixture receipt | “The agent said tests passed; the test was weakened.” |
+| 0:20–0:50 | `test.skip` and removed assertion | “This is executable proof, not a model opinion.” |
+| 0:50–1:25 | Problem and distinction | “Receipts verifies the summary, not the code.” |
+| 1:25–1:55 | Trust boundary and live capture | “Codex extracts claims; all verification afterward runs locally.” |
+| 1:55–2:30 | MERGE and ESCALATE fixtures | “One clean outcome and one narrow review signal.” |
+| 2:30–3:00 | Codex collaboration and close | “Trust the receipt.” |
 
 **Judge objection answers:** CI tells you whether a configured workflow passed. Receipts checks whether an agent completion claim is supported by a re-run and repository evidence. It is not a code reviewer, a security scanner, or a CI merge gate. The system making a claim should not be the only system that verifies it.
 
-## 0:00–0:25 — problem and live proof
+## 0:00–0:20 — the reveal
 
-> “Coding agents finish with summaries. A reviewer either trusts that summary or manually repeats the work. Receipts is for the moment between those two choices.”
+Show the input screen, select **Fixture · lied test run**, and keep the transcript visible.
 
-Play the first seconds of the recorded live capture. Keep the source transcript and its reported skipped test visible.
-
-> “This is a real Codex transcript. The agent accurately reports an exit-zero test command and one skipped test. Receipts re-runs that command and inspects the real Git diff; it finds the skipped test plus a removed assertion and produces FIX. This is a live pipeline run—not a staged success state.”
-
-## 0:25–1:10 — the wow moment
-
-Switch to the app, select **Fixture · lied test run**, and say:
-
-> “Now I’ll replay the same supported evidence type from the frozen judge fixture: this agent says checkout tests pass.”
+> “The agent says: ‘Checkout tests pass.’ I’m going to check that summary.”
 
 Click **Check this run**. Let the verdict reveal play. Pause on `FIX`.
 
-> “Receipts did not generate a confidence score. It re-ran the claimed command and inspected the frozen test diff. The test command exits successfully—but the test was skipped, and an assertion was deleted. That is why this is a FIX.”
+> “FIX BEFORE MERGE. The command did exit zero, but Receipts found a skipped test and a removed assertion. The passing command is not enough evidence to trust the summary.”
 
-Point to the struck-through claim, `test.skip`, and removed assertion. Do not rush this beat.
+## 0:20–0:50 — the receipt
 
-## 1:10–1:55 — how it works
+
+Point to the agent claim, `test.skip`, and removed assertion. Do not rush this beat.
+
+> “This is a receipt, not a confidence score: a claim, the command result, and the repository evidence beside it.”
+
+## 0:50–1:25 — why it is different
+
+> “This is not code review. CI tells you whether a configured workflow passed. Receipts checks whether an agent’s completion claim is supported by a re-run and repository evidence. Don’t trust the summary. Trust the receipt.”
+
+## 1:25–1:55 — how it works and live proof
 
 Show the README architecture diagram or briefly switch to the repository.
 
@@ -43,11 +44,15 @@ Show the README architecture diagram or briefly switch to the repository.
 
 > “The model is load-bearing because free-form agent narration must become falsifiable assertions. The evidence is deterministic because the merge decision must be inspectable.”
 
-## 1:55–2:30 — prove it is a product, not a demo trick
+Show the source link for the recorded live capture.
+
+> “The README also includes a real Codex transcript run through this path. That transcript accurately disclosed its skipped test; it proves this is a live pipeline path, while the fixture makes the same evidence type reproducible for judges.”
+
+## 1:55–2:30 — show the boundaries
 
 Show the fixture selector and quickly select `clean run`, then `blast radius run` if timing permits.
 
-> “There are three frozen cases: a clean MERGE, this FIX, and an ESCALATE for an auth-path surprise. Each has captured transcript input, command evidence, a Git diff, and an expected verdict. The regression suite replays each twice with byte-stable output. Fixtures make evaluation reproducible; the live capture demonstrates the runtime path.”
+> “There are three frozen cases: a clean MERGE, this FIX, and an ESCALATE for an auth-path surprise. Each has captured transcript input, command evidence, a Git diff, and an expected verdict. Escalation is a narrow review signal—not a security finding. Fixtures make evaluation reproducible; the live capture demonstrates the runtime path.”
 
 ## 2:30–3:00 — Codex collaboration and close
 
