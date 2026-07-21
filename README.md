@@ -63,6 +63,8 @@ Only the transcript is sent to the authenticated Codex CLI claim extractor in an
 
 Prerequisites: Node.js and an authenticated Codex CLI session. The default provider invokes `codex exec` non-interactively; no `OPENAI_API_KEY` is required.
 
+> **The rendered app needs two local processes.** `npm run dev` starts Vite only; start the evidence API in a separate terminal before opening the UI. The frozen replays themselves do not require Codex credentials.
+
 ### Supported platforms
 
 | Platform | Status | Notes |
@@ -71,12 +73,14 @@ Prerequisites: Node.js and an authenticated Codex CLI session. The default provi
 | Linux | Supported | Requires Node.js, Git, and the authenticated Codex CLI on a POSIX shell. |
 | Windows | Not currently supported | The fixture capture/test path expects POSIX tooling. |
 
+In terminal 1, start the evidence API:
+
 ```bash
 npm ci
 npm run evidence:server
 ```
 
-In another terminal:
+In terminal 2, start the Vite UI:
 
 ```bash
 npm run dev
