@@ -82,7 +82,7 @@ In another terminal:
 npm run dev
 ```
 
-Open the Vite URL, choose a frozen fixture, and select **Check this run**.
+Open the Vite URL, choose a **Frozen replay**, and select **Verify the summary**.
 
 ### Judge quickstart — no rebuild or Codex credits required
 
@@ -96,7 +96,7 @@ npm run test:pipeline
 
 Expected fixture verdicts are `MERGE` (`clean-run`), `FIX` (`lied-test-run`), and `ESCALATE` (`blast-radius-run`). This is the fastest way to judge the product logic without rebuilding or configuring a live agent environment.
 
-To try the rendered UI without a production build, start `npm run evidence:server` and `npm run dev`, then choose one of the three **Fixture** options in the sample-run dropdown.
+To try the rendered UI without a production build, start `npm run evidence:server` and `npm run dev`, then choose one of the three **Frozen replay** options in the sample-run dropdown. The final option, **Live runtime proof · Requires authenticated Codex**, uses the local runtime path.
 
 Receipts also keeps the last 20 actual local verification summaries in `.receipts/history.json` (ignored by Git). The UI shows only real verdicts, extracted-claim counts, evidence counts, and timestamps—never guessed agent identities or synthetic trend data.
 

@@ -17,11 +17,11 @@ This script is deliberately centered on one verification workflow, not a feature
 
 ## 0:00–0:20 — the reveal
 
-Show the input screen, select **Fixture · lied test run**, and keep the transcript visible.
+Show the input screen, select **Frozen replay · Weakened test**, and keep the transcript visible.
 
 > “The agent says: ‘Checkout tests pass.’ I’m going to check that summary.”
 
-Click **Check this run**. Let the verdict reveal play. Pause on `FIX`.
+Click **Verify the summary**. Let the verdict reveal play. Pause on `FIX`.
 
 > “FIX BEFORE MERGE. The command did exit zero, but Receipts found a skipped test and a removed assertion. The passing command is not enough evidence to trust the summary.”
 
@@ -50,7 +50,7 @@ Show the source link for the recorded live capture.
 
 ## 1:55–2:30 — show the boundaries
 
-Show the fixture selector and quickly select `clean run`, then `blast radius run` if timing permits.
+Show the replay selector and quickly select **Frozen replay · Clean evidence**, then **Frozen replay · Sensitive path changed** if timing permits.
 
 > “There are three frozen cases: a clean MERGE, this FIX, and an ESCALATE for an auth-path surprise. Each has captured transcript input, command evidence, a Git diff, and an expected verdict. Escalation is a narrow review signal—not a security finding. Fixtures make evaluation reproducible; the live capture demonstrates the runtime path.”
 
