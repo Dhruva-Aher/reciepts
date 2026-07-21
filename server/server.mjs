@@ -1,22 +1,53 @@
 import { createServer } from 'node:http';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { join, resolve } from 'node:path';
 import { verifyRun } from './pipeline/index.mjs';
 import { verifyFixture } from './pipeline/fixture.mjs';
 const send = (res, status, body) => { res.writeHead(status, { 'content-type': 'application/json' }); res.end(JSON.stringify(body)); };
 const MAX_REQUEST_BODY_BYTES = 128 * 1024;
+const MAX_HISTORY_ENTRIES = 200;
+const MAX_STORED_DIFF_BYTES = 96 * 1024;
 const workspacePath = process.cwd();
 const historyFile = join(process.cwd(), '.receipts', 'history.json');
 let historyWrite = Promise.resolve();
 let verificationInProgress = false;
-async function readHistory() { try { return JSON.parse(await readFile(historyFile, 'utf8')); } catch (error) { if (error.code === 'ENOENT') return []; throw error; } }
+const exec = promisify(execFile);
+async function readHistory() { try { const history = JSON.parse(await readFile(historyFile, 'utf8')); return Array.isArray(history) ? history : []; } catch (error) { if (error.code === 'ENOENT') return []; throw error; } }
+async function repositoryContext() {
+  const branch = await exec('git', ['branch', '--show-current'], { cwd: workspacePath }).then(({ stdout }) => stdout.trim() || 'detached HEAD').catch(() => 'unknown branch');
+  return { repo: workspacePath.split('/').at(-1) || 'configured repository', branch };
+}
+function claimKind(report) {
+  const claim = report.parsed?.claims?.[0];
+  if (claim?.type === 'tests_pass') return 'test claim';
+  if (report.blastRadius?.sensitivePaths?.length) return 'sensitive-path claim';
+  return 'command claim';
+}
+function storedReport(report) {
+  return { ...report, evidenceDiff: (report.evidenceDiff || '').slice(0, MAX_STORED_DIFF_BYTES) };
+}
 async function remember(report) {
   const write = historyWrite.catch(() => {}).then(async () => {
     const history = await readHistory();
-    const entry = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), verdict: report.verdict.verdict, claims: report.parsed.claims.length, evidence: report.verdict.evidenceCount };
+    const context = await repositoryContext();
+    const entry = {
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString(),
+      verdict: report.verdict.verdict,
+      claims: report.parsed.claims.length,
+      evidence: report.verdict.evidenceCount,
+      claim: report.parsed?.claims?.[0]?.text || 'No executable claim was extracted.',
+      claimKind: claimKind(report),
+      agent: report.replay ? 'Captured coding agent' : 'Configured coding agent',
+      ...context,
+      hasSensitivePath: Boolean(report.blastRadius?.sensitivePaths?.length),
+      report: storedReport(report)
+    };
     await mkdir(join(process.cwd(), '.receipts'), { recursive: true });
     const temp = `${historyFile}.${crypto.randomUUID()}.tmp`;
-    await writeFile(temp, JSON.stringify([entry, ...history].slice(0, 20), null, 2));
+    await writeFile(temp, JSON.stringify([entry, ...history].slice(0, MAX_HISTORY_ENTRIES), null, 2));
     await rename(temp, historyFile);
     return entry;
   });
@@ -24,8 +55,15 @@ async function remember(report) {
   return write;
 }
 createServer(async (req, res) => {
-  if (req.method === 'GET' && req.url === '/history') return send(res, 200, { reports: await readHistory() });
-  if (req.method !== 'POST' || req.url !== '/verify') return send(res, 404, { error: 'POST /verify' });
+  const url = new URL(req.url, 'http://127.0.0.1:8787');
+  if (req.method === 'GET' && url.pathname === '/history') return send(res, 200, { reports: await readHistory() });
+  if (req.method === 'GET' && url.pathname.startsWith('/history/')) {
+    const id = decodeURIComponent(url.pathname.slice('/history/'.length));
+    const receipt = (await readHistory()).find((entry) => entry.id === id);
+    if (!receipt?.report) return send(res, 404, { error: 'This receipt is unavailable. It may have been created before receipt snapshots were retained.' });
+    return send(res, 200, { receipt, report: receipt.report });
+  }
+  if (req.method !== 'POST' || url.pathname !== '/verify') return send(res, 404, { error: 'POST /verify' });
   if (verificationInProgress) return send(res, 429, { error: 'A verification is already running. Wait for it to finish, then try again.' });
   verificationInProgress = true;
   try {
@@ -41,7 +79,7 @@ createServer(async (req, res) => {
     let history = null;
     try { history = await remember(report); }
     catch (historyError) { console.warn(`Receipts history could not be saved: ${historyError.message}`); }
-    send(res, 200, { ...report, history });
+    send(res, 200, { ...storedReport(report), history });
   }
   catch (error) { send(res, error.statusCode || 400, { error: error.message }); }
   finally { verificationInProgress = false; }

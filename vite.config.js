@@ -4,5 +4,5 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: { proxy: { '/verify': 'http://127.0.0.1:8787' } }
+  server: { proxy: { '/verify': 'http://127.0.0.1:8787', '/history': 'http://127.0.0.1:8787' } }
 });

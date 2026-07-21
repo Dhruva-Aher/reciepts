@@ -22,6 +22,9 @@ export async function verifyRun({ transcript, cwd, taskDescription = '', base = 
   const weakenedTests = detectWeakenedTests(diff);
   const blastRadius = classifyBlastRadius(diff, taskDescription);
   const report = { parsed, claimEvidence, weakenedTests, blastRadius, verdict: makeVerdict({ claimEvidence, weakenedTests, blastRadius }) };
+  // Kept non-enumerable so the pipeline's stable report contract remains compact. The HTTP
+  // layer deliberately exposes this raw patch only for the receipt's expandable proof view.
+  Object.defineProperty(report, 'evidenceDiff', { value: diff.patch, enumerable: false });
   if (measure) report.timing = { claimExtractionMs: Math.round(extractionMs), commandVerificationMs: Math.round(verificationMs), diffInspectionMs: Math.round(performance.now() - diffStartedAt), totalMs: Math.round(performance.now() - startedAt) };
   return report;
 }
