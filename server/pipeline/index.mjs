@@ -13,6 +13,9 @@ export async function verifyRun({ transcript, cwd, taskDescription = '', base = 
   const runnable = parsed.claims.filter((claim) => claim.command && (claim.type === 'tests_pass' || claim.type === 'command_success'));
   const claimEvidence = [];
   for (const claim of runnable) claimEvidence.push(evaluateCommandClaim(claim, await rerunCommand(claim.command, { cwd })));
+  for (const claim of parsed.claims.filter((claim) => !runnable.includes(claim))) {
+    claimEvidence.push({ claimId: claim.id, kind: 'unsupported_claim', status: 'inconclusive', claim: claim.text, output: 'Receipts does not currently have deterministic evidence for this claim.' });
+  }
   const verificationMs = performance.now() - startedAt - extractionMs;
   const diffStartedAt = performance.now();
   const diff = await gitDiff(cwd, base);
